@@ -12,89 +12,118 @@ struct PasswordResetView: View {
     @State private var isEmailValid: Bool = true
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
+    @State private var isLoading: Bool = false // Yükleme durumu
 
     var body: some View {
         NavigationView {
-            VStack {
-                // Başlık
-                Text("Şifre Sıfırlama")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 10)
-                    .frame(maxWidth: .infinity, alignment: .center)
+            ZStack {
+                Image("Image")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(0.2)
                 
-                // Açıklama metni
-                Text("Şifreyi sıfırlamak için e-posta adresinizi giriniz.")
-                    .font(.system(size: 14)) // Yazı boyutunu 14 olarak ayarlayın
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 20)
-                
-                // E-posta girişi
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10) // Yuvarlak köşe
-                        .fill(Color(.systemGray6)) // Arka plan rengi
-                        .frame(width: 300, height: 40) // Genişlik ve yükseklik ayarı
+                VStack {
+                    Spacer().frame(height: 20) // Üst boşluk için spacer
                     
-                    HStack {
-                        Text("@")
-                            .foregroundColor(.gray)
-                            .font(.system(size: 20)) // Boyut ayarı
-                            .padding(.leading, 30) // Sol boşluk ekleyin
-                            .padding(.trailing, 2) // Sağ boşluk ekleyin, böylece TextField'a biraz boşluk kalır
+                    // Diğer öğeler
+                    VStack(alignment: .center) {
+                        Text("Şifre Sıfırlama")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .padding(.bottom, 10)
                         
-                        TextField("E-Posta", text: $email)
-                            .padding(.leading, 8) // Sol boşluk
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                    }
-                    .padding(.horizontal) // Yatay boşluk
-                }
-                .padding(.bottom, 10)
-                
-                if !isEmailValid {
-                    Text("Geçersiz e-posta adresi.")
-                        .foregroundColor(.red)
+                        Text("Şifreyi sıfırlamak için e-posta adresinizi giriniz.")
+                            .font(.system(size: 14))
+                            .foregroundColor(.gray)
+                            .padding(.bottom, 20)
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color(.systemGray6))
+                                .frame(width: 300, height: 40)
+                            
+                            HStack {
+                                Text("@")
+                                    .foregroundColor(.black)
+                                    .font(.system(size: 30))
+                                    .padding(.leading, 30)
+                                    .padding(.trailing, 2)
+                                
+                                TextField("E-Posta", text: $email)
+                                    .padding(.leading, 8)
+                                    .keyboardType(.emailAddress)
+                                    .autocapitalization(.none)
+                            }
+                            .padding(.horizontal)
+                        }
                         .padding(.bottom, 10)
-                }
-                
-                // Şifre sıfırlama talebi gönder butonu
-                Button(action: {
-                    resetPassword()
-                }) {
-                    Text("ŞİFRE SIFIRLAMA TALEBİ GÖNDER")
-                        .frame(width: 300, height: 40) // Genişlikveyükseklik ayarı
-                        .background(Color(red: 0.6, green: 0, blue: 0.8)) // Koyu mor arka plan rengi
-                        .foregroundColor(.white)
-                        .font(.system(size: 14, weight: .bold))
-                        .cornerRadius(25) // Kenarları tam yuvarlak yapmak için
-                }
-                .padding(.top, 10)
-                .alert(isPresented: $showAlert) {
-                    Alert(title: Text("Duyuru"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
+                        
+                        if !isEmailValid {
+                            Text("Geçersiz e-posta adresi.")
+                                .foregroundColor(.red)
+                                .padding(.bottom, 10)
+                        }
+                        
+                        Button(action: {
+                            resetPassword()
+                        }) {
+                            if isLoading {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                    .frame(width: 300, height: 40)
+                            } else {
+                                Text("ŞİFRE SIFIRLAMA TALEBİ GÖNDER")
+                                    .frame(width: 300, height: 40)
+                                    .background(Color(red: 0.6, green: 0, blue: 0.8))
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 14, weight: .bold))
+                                    .cornerRadius(25)
+                            }
+                        }
+                        .padding(.top, 10)
+                        .alert(isPresented: $showAlert) {
+                            Alert(title: Text("Duyuru"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
+                        }
+                    }
+                    .padding()
                 }
             }
-            .padding()
-            .navigationBarBackButtonHidden(false) // Geri butonunu göster
-         .navigationBarItems(leading: Button(action: {
-                            // Geri gitmek için buraya işlemi ekleyebilirsiniz
-                        }) {
-         Image(systemName: "chevron.left") // Geri ok simgesi
-        .foregroundColor(.black) // Renk ayarı
-                        })
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Image("logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .padding(.top, 10) // Üst boşluk için padding
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        // Geriye dönme işlemi
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.black)
                     }
                 }
+            }
+        }
+    }
+
     private func resetPassword() {
-        // E-posta doğrulama
         if email.isEmpty || !email.contains("@") {
             isEmailValid = false
             return
         }
         
         isEmailValid = true
+        isLoading = true
         
-        // Burada şifre sıfırlama işlemini gerçekleştir
-        alertMessage = "Şifre sıfırlama bağlantısı gönderildi."
-        showAlert = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            alertMessage = "E-posta adresinize şifre sıfırlama talebi gönderildi. Lütfen E-postanızı kontrol ediniz."
+            showAlert = true
+            isLoading = false
+        }
     }
 }
 
