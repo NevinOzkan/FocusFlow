@@ -13,6 +13,7 @@ struct PasswordResetView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var isLoading: Bool = false
+    @State private var isEditing: Bool = false 
 
     var body: some View {
         NavigationView {
@@ -26,10 +27,11 @@ struct PasswordResetView: View {
                 VStack {
                     VStack {
                         Image("logo")
-                            .offset(y: -250)
+                            .offset(y:-240)
                             .frame(width: 135, height: 53)
                     }
                     
+                    // Diğer öğeler
                     VStack(alignment: .center) {
                         Text("Şifre Sıfırlama")
                             .font(.largeTitle)
@@ -42,35 +44,30 @@ struct PasswordResetView: View {
                             .foregroundColor(.gray)
                             .padding(.bottom, 20)
                         
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color(.systemGray6))
-                                .frame(width: 300, height: 40)
+                        HStack {
+                            Text("@")
+                                .foregroundColor(.black)
+                                .font(.system(size: 30))
+                                .padding(.leading, 30)
+                                .padding(.trailing, 2)
                             
-                            HStack {
-                                Text("@")
-                                    .foregroundColor(.black)
-                                    .font(.system(size: 30))
-                                    .padding(.leading, 30)
-                                    .padding(.trailing, 2)
-                                
-                                HStack(spacing: 0) {
-                                    Text("E-Posta")
-                                        .foregroundColor(.gray)
-                                    
+                            ZStack(alignment: .trailing) {
+                                if email.isEmpty {
                                     Text("*")
                                         .foregroundColor(.red)
-                                    
-                                    TextField("", text: $email)
-                                        .padding(.leading, 5)
-                                        .keyboardType(.emailAddress)
-                                        .autocapitalization(.none)
+                                        .padding(.trailing, 195)
                                 }
+                                
+                                TextField("E-posta", text: $email)
+                                    .keyboardType(.emailAddress)
+                                    .autocapitalization(.none)
+                                    .foregroundColor(.black)
+                                    .padding(.leading, 8)
                             }
-                            .padding(.horizontal)
                         }
+                        .padding(.horizontal)
                         .padding(.bottom, 10)
-                        
+
                         if !isEmailValid {
                             Text("Geçersiz e-posta adresi.")
                                 .foregroundColor(.red)
@@ -105,8 +102,8 @@ struct PasswordResetView: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.black)
-                        .font(.system(size: 23, weight: .bold))
-                               .padding(.top, 100)
+                        .font(.system(size: 24, weight: .bold))
+                        .padding(.top, 100)
                 })
             }
         }
