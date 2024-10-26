@@ -12,7 +12,7 @@ struct PasswordResetView: View {
     @State private var isEmailValid: Bool = true
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var isLoading: Bool = false // Yükleme durumu
+    @State private var isLoading: Bool = false
 
     var body: some View {
         NavigationView {
@@ -24,14 +24,18 @@ struct PasswordResetView: View {
                     .opacity(0.2)
                 
                 VStack {
-                    Spacer().frame(height: 20) // Üst boşluk için spacer
+                    VStack {
+                        Image("logo")
+                            .offset(y: -250)
+                            .frame(width: 135, height: 53)
+                    }
                     
-                    // Diğer öğeler
                     VStack(alignment: .center) {
                         Text("Şifre Sıfırlama")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .padding(.bottom, 10)
+                            .frame(maxWidth: .infinity, alignment: .center)
                         
                         Text("Şifreyi sıfırlamak için e-posta adresinizi giriniz.")
                             .font(.system(size: 14))
@@ -50,10 +54,18 @@ struct PasswordResetView: View {
                                     .padding(.leading, 30)
                                     .padding(.trailing, 2)
                                 
-                                TextField("E-Posta", text: $email)
-                                    .padding(.leading, 8)
-                                    .keyboardType(.emailAddress)
-                                    .autocapitalization(.none)
+                                HStack(spacing: 0) {
+                                    Text("E-Posta")
+                                        .foregroundColor(.gray)
+                                    
+                                    Text("*")
+                                        .foregroundColor(.red)
+                                    
+                                    TextField("", text: $email)
+                                        .padding(.leading, 5)
+                                        .keyboardType(.emailAddress)
+                                        .autocapitalization(.none)
+                                }
                             }
                             .padding(.horizontal)
                         }
@@ -88,24 +100,14 @@ struct PasswordResetView: View {
                     }
                     .padding()
                 }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .padding(.top, 10) // Üst boşluk için padding
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        // Geriye dönme işlemi
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.black)
-                    }
-                }
+                .navigationBarBackButtonHidden(false)
+                .navigationBarItems(leading: Button(action: {
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.black)
+                        .font(.system(size: 23, weight: .bold))
+                               .padding(.top, 100)
+                })
             }
         }
     }
