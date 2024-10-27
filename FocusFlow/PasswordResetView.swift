@@ -31,7 +31,7 @@ struct PasswordResetView: View {
                             .frame(width: 135, height: 53)
                     }
                     
-                    // Diğer öğeler
+                
                     VStack(alignment: .center) {
                         Text("Şifre Sıfırlama")
                             .font(.largeTitle)

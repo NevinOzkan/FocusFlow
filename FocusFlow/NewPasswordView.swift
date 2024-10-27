@@ -17,7 +17,6 @@ struct NewPasswordView: View {
 
     var body: some View {
         ZStack {
-            // Arka Plan Görseli
             Image("Image")
                 .resizable()
                 .scaledToFill()
@@ -25,7 +24,6 @@ struct NewPasswordView: View {
                 .opacity(0.2)
 
             VStack(spacing: 20) {
-                // Üst Kısım: Geri Butonu ve Logo
                 HStack {
                     Button(action: {
                         // Geri butonuna basıldığında yapılacak işlemler
@@ -50,13 +48,13 @@ struct NewPasswordView: View {
                     .fontWeight(.bold)
                     .padding(.top, 40)
 
-                // Yeni Şifre Alanı
+            
                 passwordField(title: "Yeni Şifre", text: $newPassword, isVisible: $isPasswordVisible)
 
-                // Şifreyi Tekrar Alanı
+                
                 passwordField(title: "Şifreyi Tekrarla", text: $confirmPassword, isVisible: $isConfirmPasswordVisible)
 
-                // Yeni Şifreyi Kaydet Butonu
+               
                 Button(action: savePassword) {
                     Text("Yeni Şifreyi Kaydet")
                         .font(.headline)
@@ -72,7 +70,7 @@ struct NewPasswordView: View {
                     Alert(title: Text("Bilgilendirme"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
                 }
 
-                // Şifre Gereksinimleri
+               
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Şifrede bulunması gerekenler:")
                         .font(.headline)
@@ -104,7 +102,7 @@ struct NewPasswordView: View {
         }
     }
 
-    // Şifre alanı oluşturma fonksiyonu
+   
     private func passwordField(title: String, text: Binding<String>, isVisible: Binding<Bool>) -> some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(Color(.systemGray6))
@@ -130,7 +128,7 @@ struct NewPasswordView: View {
             .padding(.horizontal, 24)
     }
 
-    // Şifre Kayıt Fonksiyonu
+    
     private func savePassword() {
         if newPassword == confirmPassword && isPasswordStrong(password: newPassword) {
             alertMessage = "Şifreniz başarıyla kaydedildi!"
@@ -141,7 +139,7 @@ struct NewPasswordView: View {
         }
     }
 
-    // Şifre Güçlü Kontrol Fonksiyonu
+   
     private func isPasswordStrong(password: String) -> Bool {
         return password.count >= 8 && containsUpperAndLowercase(password: password) && containsDigit(password: password)
     }

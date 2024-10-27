@@ -1,5 +1,5 @@
 //
-//  PasswordResetConfirmationView.swift
+//  PasswordResetSuccessView.swift
 //  FocusFlow
 //
 //  Created by Nevin Özkan on 28.10.2024.
@@ -7,7 +7,9 @@
 
 import SwiftUI
 
-struct PasswordResetConfirmationView: View {
+struct PasswordResetSuccessView: View {
+    @State private var isLoading: Bool = true
+    
     var body: some View {
         ZStack {
             Image("Image")
@@ -21,15 +23,24 @@ struct PasswordResetConfirmationView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 135, height: 53)
-                    .padding(.top, 50) 
-
+                    .padding(.top, 50)
+                
                 Spacer()
-
-                Text("E-posta adresinize şifre sıfırlama talebi gönderildi. Lütfen E-postanızı kontrol ediniz.")
+                
+                Text("Şifreniz başarıyla sıfırlandı.")
                     .font(.title)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding()
+                
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
+                        .scaleEffect(1.5)
+                        .padding(.top, 20)
+                        .rotationEffect(.degrees(360)) 
+                        .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isLoading)
+                }
 
                 Spacer()
             }
@@ -37,9 +48,13 @@ struct PasswordResetConfirmationView: View {
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Şifre Sıfırlama")
+        .onAppear {
+            // Yüklenme simgesini başlat
+            isLoading = true
+        }
     }
 }
 
 #Preview {
-    PasswordResetConfirmationView()
+    PasswordResetSuccessView()
 }
