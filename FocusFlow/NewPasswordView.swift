@@ -43,14 +43,31 @@ struct NewPasswordView: View {
 
                 Spacer()
 
+                
                 Text("Yeni Şifre Belirle")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.top, 40)
                 
-                passwordField(title: "Yeni Şifre", text: $newPassword, isVisible: $isPasswordVisible, leftImage: "lock")
+                ZStack(alignment: .trailing) {
+                    passwordField(title: "Yeni Şifre", text: $newPassword, isVisible: $isPasswordVisible, leftImage: "lock")
+                    
+                    if newPassword.isEmpty {
+                        Text("*")
+                            .foregroundColor(.red)
+                            .padding(.trailing, 240)
+                    }
+                }
 
-                passwordField(title: "Şifreyi Tekrarla", text: $confirmPassword, isVisible: $isConfirmPasswordVisible, leftImage: "lock")
+                ZStack(alignment: .trailing) {
+                    passwordField(title: "Şifreyi Tekrarla", text: $confirmPassword, isVisible: $isConfirmPasswordVisible, leftImage: "lock")
+
+                    if confirmPassword.isEmpty {
+                        Text("*")
+                            .foregroundColor(.red)
+                            .padding(.trailing, 200)
+                    }
+                }
 
                 Button(action: {}) {
                     Text("Yeni Şifreyi Kaydet")
@@ -106,6 +123,7 @@ struct NewPasswordView: View {
                 .frame(height: 50)
                 .overlay(
                     HStack {
+                        
                         Image("lock")
                             .resizable()
                             .scaledToFit()
