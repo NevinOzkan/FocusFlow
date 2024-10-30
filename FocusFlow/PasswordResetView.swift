@@ -13,7 +13,7 @@ struct PasswordResetView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var isLoading: Bool = false
-    @State private var isEditing: Bool = false 
+    @State private var isEditing: Bool = false
 
     var body: some View {
         NavigationView {
@@ -75,7 +75,7 @@ struct PasswordResetView: View {
                         }
                         
                         Button(action: {
-                            resetPassword()
+                            // resetPassword() 
                         }) {
                             if isLoading {
                                 ProgressView()
@@ -109,21 +109,6 @@ struct PasswordResetView: View {
         }
     }
 
-    private func resetPassword() {
-        if email.isEmpty || !email.contains("@") {
-            isEmailValid = false
-            return
-        }
-        
-        isEmailValid = true
-        isLoading = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            alertMessage = "E-posta adresinize şifre sıfırlama talebi gönderildi. Lütfen E-postanızı kontrol ediniz."
-            showAlert = true
-            isLoading = false
-        }
-    }
 }
 
 #Preview {

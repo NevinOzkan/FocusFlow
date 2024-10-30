@@ -5,7 +5,6 @@
 //  Created by Nevin Özkan on 28.10.2024.
 //
 
-
 import SwiftUI
 
 struct PasswordResetLoadingView: View {
@@ -69,18 +68,22 @@ struct PasswordResetLoadingView: View {
                                 .padding(.bottom, 10)
                         }
                         
-                        Button(action: {
-                            resetPassword()
-                        }) {
+                       
+                        Button(action: {}) {
                             if isLoading {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                     .frame(width: 300, height: 40)
                             } else {
-                                Color.clear
-                                    .frame(width: 300, height: 40)
-                                    .background(Color(red: 0.6, green: 0, blue: 0.8))
-                                    .cornerRadius(25)
+                                HStack {
+                                    Image("Loading")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 15, height: 15)
+                                }
+                                .frame(width: 300, height: 40)
+                                .background(Color(red: 0.6, green: 0, blue: 0.8))
+                                .cornerRadius(25)
                             }
                         }
                         .padding(.top, 10)
@@ -102,19 +105,7 @@ struct PasswordResetLoadingView: View {
             }
         }
     }
-
-    private func resetPassword() {
-        if email.isEmpty || !email.contains("@") {
-            isEmailValid = false
-            return
-        }
-        
-        isEmailValid = true
-        isLoading = true
-        
-       
-        }
-    }
+}
 
 #Preview {
     PasswordResetLoadingView()

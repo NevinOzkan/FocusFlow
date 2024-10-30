@@ -34,43 +34,40 @@ struct NewPasswordView: View {
                     }
                     Spacer()
                     Image("logo")
-                        .offset(y:-40)
+                        .offset(y: -40)
                         .frame(width: 135, height: 53)
                     Spacer()
                 }
                 .padding(.top, 40)
                 .padding(.horizontal, 20)
-                
+
                 Spacer()
 
                 Text("Yeni Şifre Belirle")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.top, 40)
-
-            
-                passwordField(title: "Yeni Şifre", text: $newPassword, isVisible: $isPasswordVisible)
-
                 
-                passwordField(title: "Şifreyi Tekrarla", text: $confirmPassword, isVisible: $isConfirmPasswordVisible)
+                passwordField(title: "Yeni Şifre", text: $newPassword, isVisible: $isPasswordVisible, leftImage: "lock")
 
-               
-                Button(action: savePassword) {
+                passwordField(title: "Şifreyi Tekrarla", text: $confirmPassword, isVisible: $isConfirmPasswordVisible, leftImage: "lock")
+
+                Button(action: {}) {
                     Text("Yeni Şifreyi Kaydet")
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color(red: 0.6, green: 0, blue: 0.8))
                         .cornerRadius(25)
                         .frame(width: UIScreen.main.bounds.width - 48)
                 }
                 .padding(.horizontal, 24)
+                
                 .alert(isPresented: $showAlert) {
                     Alert(title: Text("Bilgilendirme"), message: Text(alertMessage), dismissButton: .default(Text("Tamam")))
                 }
 
-               
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Şifrede bulunması gerekenler:")
                         .font(.headline)
@@ -102,44 +99,44 @@ struct NewPasswordView: View {
         }
     }
 
-   
-    private func passwordField(title: String, text: Binding<String>, isVisible: Binding<Bool>) -> some View {
-        RoundedRectangle(cornerRadius: 20)
-            .fill(Color(.systemGray6))
-            .frame(height: 50)
-            .overlay(
-                HStack {
-                    if isVisible.wrappedValue {
-                        TextField(title, text: text)
-                            .padding()
-                    } else {
-                        SecureField(title, text: text)
-                            .padding()
+    private func passwordField(title: String, text: Binding<String>, isVisible: Binding<Bool>, leftImage: String) -> some View {
+        HStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color(.systemGray6))
+                .frame(height: 50)
+                .overlay(
+                    HStack {
+                        Image("lock")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .padding(.leading, 10)
+                        
+                        if isVisible.wrappedValue {
+                            TextField(title, text: text)
+                                .padding(.leading, 10)
+                        } else {
+                            SecureField(title, text: text)
+                                .padding(.leading, 10)
+                        }
+                        
+                        Spacer()
+                    
+                        Image("eyes")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .padding(.trailing, 10)
+                            .onTapGesture {
+                                isVisible.wrappedValue.toggle()
+                            }
                     }
-                    Button(action: {
-                        isVisible.wrappedValue.toggle()
-                    }) {
-                        Image(systemName: isVisible.wrappedValue ? "eye" : "eye.slash")
-                            .foregroundColor(.gray)
-                    }
-                    .padding(.trailing, 10)
-                }
-            )
-            .padding(.horizontal, 24)
-    }
-
-    
-    private func savePassword() {
-        if newPassword == confirmPassword && isPasswordStrong(password: newPassword) {
-            alertMessage = "Şifreniz başarıyla kaydedildi!"
-            showAlert = true
-        } else {
-            alertMessage = "Şifre kriterleri sağlanamıyor veya şifreler uyuşmuyor."
-            showAlert = true
+                )
+                .padding(.horizontal, 24)
+        
         }
     }
 
-   
     private func isPasswordStrong(password: String) -> Bool {
         return password.count >= 8 && containsUpperAndLowercase(password: password) && containsDigit(password: password)
     }

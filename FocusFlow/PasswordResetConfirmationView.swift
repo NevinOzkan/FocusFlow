@@ -21,7 +21,7 @@ struct PasswordResetConfirmationView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 135, height: 53)
-                    .padding(.top, 50) 
+                    .padding(.top, 50)
 
                 Spacer()
 
@@ -30,6 +30,13 @@ struct PasswordResetConfirmationView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                     .padding()
+
+              
+                Image("Loading 2")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .padding(.bottom, 50)
 
                 Spacer()
             }

@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct PasswordResetSuccessView: View {
-    @State private var isLoading: Bool = true
-    
     var body: some View {
         ZStack {
             Image("Image")
@@ -33,25 +31,18 @@ struct PasswordResetSuccessView: View {
                     .multilineTextAlignment(.center)
                     .padding()
                 
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: Color.green))
-                        .scaleEffect(1.5)
-                        .padding(.top, 20)
-                        .rotationEffect(.degrees(360)) 
-                        .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isLoading)
-                }
-
+                
+                Image("Loading 2")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40, height: 40)
+                    .padding(.top, 1) 
                 Spacer()
             }
             .padding()
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("Şifre Sıfırlama")
-        .onAppear {
-            // Yüklenme simgesini başlat
-            isLoading = true
-        }
     }
 }
 
